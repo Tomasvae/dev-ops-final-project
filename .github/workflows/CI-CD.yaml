@@ -1,4 +1,4 @@
-name: CI/CD pipeline
+name: CI CD pipeline
 
 on:
   pull_request:
@@ -37,15 +37,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Permet de récupérer toutes les branches
 
-      - name: Push to staging branch
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git checkout staging
-          git push origin staging
+      - name: Merge Dev into Staging
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: dev
+          target_branch: staging
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
   build-and-test-on-staging:
     if: github.ref == 'refs/heads/staging'
