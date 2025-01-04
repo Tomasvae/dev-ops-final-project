@@ -35,11 +35,16 @@ jobs:
     if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Permet de récupérer toutes les branches
+
       - name: Push to staging branch
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git checkout -b staging
+          git checkout staging
           git push origin staging
 
   build-and-test-on-staging:
